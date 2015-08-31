@@ -1,43 +1,41 @@
+var mapsLoader =function(){
+  var handler = Gmaps.build('Google');
 
+  handler.buildMap({ internal: {id: 'map'} }, function(){
 
-  <script type="text/javascript">
- 
-    function startWatch(){
-      if (navigator.geolocation)
-        var watchId = navigator.geolocation.watchPosition(successCallback,
-                                  errorCallback,
-                                  {enableHighAccuracy:true,
-                                  timeout:10000,
-                                  maximumAge:0});
-      else
-        alert("Votre navigateur ne prend pas en compte la géolocalisation HTML5");
-    }
-     
-    function stopWatch(){
-      navigator.geolocation.clearWatch(watchId);
-    }     
-     
-    function successCallback(position){
-      document.getElementById("lat").innerHTML = position.coords.latitude;
-      document.getElementById("long").innerHTML = position.coords.longitude;
-      document.getElementById("prec").innerHTML = position.coords.accuracy;
-      document.getElementById("alt").innerHTML = position.coords.altitude;
-      document.getElementById("precalt").innerHTML = position.coords.altitudeAccuracy;
-      document.getElementById("angle").innerHTML = position.coords.heading;
-      document.getElementById("speed").innerHTML = position.coords.speed;
-      document.getElementById("time").innerHTML = new Date(position.timestamp);
-    };  
- 
-    function errorCallback(error){
-      switch(error.code){
-        case error.PERMISSION_DENIED:
-          alert("L'utilisateur n'a pas autorisé l'accès à sa position");
-          break;      
-        case error.POSITION_UNAVAILABLE:
-          alert("L'emplacement de l'utilisateur n'a pas pu être déterminé");
-          break;
-        case error.TIMEOUT:
-          alert("Le service n'a pas répondu à temps");
-          break;
-        }
-    };
+  if(navigator.geolocation)
+    navigator.geolocation.getCurrentPosition(displayOnMap);
+
+    var coords = [];
+
+      $.each($("tbody > tr"), function(i, elem){
+        var newAirport = {};
+        console.log(i, $(elem).find("td.lat").text(), $(elem).find("td.lng").text());
+        newAirport.lat = parseFloat($(elem).find("td.lat").text());
+        newAirport.lng = parseFloat($(elem).find("td.lng").text());
+        coords[coords.length] = newAirport;
+      });
+      console.log(coords);
+/*coords = [
+    { lat: 43, lng: 3.5},
+    { lat: 45, lng: 4},
+    { lat: 47, lng: 3.5},
+    { lat: 49, lng: 4},
+    { lat: 51, lng: 3.5}
+  ]*/
+  console.log(coords);
+  var markers = handler.addMarkers(
+    coords);
+
+  handler.bounds.extendWith(markers);
+  handler.fitMapToBounds();
+});
+
+  function displayOnMap(position){
+    var marker = handler.addMarker({
+      lat: position.coords.latitude,
+      lng: position.coords.longitude
+    });
+    handler.map.centerOn(marker);
+  };
+};

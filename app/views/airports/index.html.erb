@@ -13,13 +13,13 @@
     </tr>
   </thead>
 
-  <tbody>
+  <tbody  onload="initialiser()">
     <% @airports.each do |airport| %>
       <tr>
         <td><%= airport.code_iata %></td>
         <td><%= airport.nom_airport %></td>
-        <td><%= airport.latitude %></td>
-        <td><%= airport.longitude %></td>
+        <td class="lat"><%= airport.latitude %></td>
+        <td class="lng"><%= airport.longitude %></td>
         <td><%= link_to 'Show', airport %></td>
         <td><%= link_to 'Edit', edit_airport_path(airport) %></td>
         <td><%= link_to 'Destroy', airport, method: :delete, data: { confirm: 'Are you sure?' } %></td>
@@ -31,8 +31,9 @@
 <br>
 
 
-
-<iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d5574925.948115622!2d0.9758207031250165!3d46.97874561903879!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sfr!2sfr!4v1440491375000" width="600" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>
+<div style='width: 800px;'>
+  <div id="map" style='width: 800px; height: 400px;'></div>
+</div>
 <br>
 
 <%= link_to 'New Airport', new_airport_path %>
