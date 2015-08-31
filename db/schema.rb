@@ -11,11 +11,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150825070450) do
+ActiveRecord::Schema.define(version: 20150825080245) do
 
   create_table "airports", force: :cascade do |t|
     t.string   "code_iata",   limit: 255
     t.string   "nom_airport", limit: 255
+    t.float    "latitude",    limit: 24
+    t.float    "longitude",   limit: 24
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+  end
+
+  create_table "companies", force: :cascade do |t|
+    t.string   "nom_company", limit: 255
+    t.string   "code_iata",   limit: 255
     t.float    "latitude",    limit: 24
     t.float    "longitude",   limit: 24
     t.datetime "created_at",              null: false
